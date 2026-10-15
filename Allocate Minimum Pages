@@ -21,7 +21,7 @@ class Solution {
             // we will sum the pages if any moment it exceeds the mid value 
             // we will go to the else part where we increase the count
             // that means from there we have started givig books to new person
-            // ans give him arr[i] number of book 
+            // and give him arr[i] number of book 
             if(sum+arr[i]<=mid){
                 sum+=arr[i];
             }
