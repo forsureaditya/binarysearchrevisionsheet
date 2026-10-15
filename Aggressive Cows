@@ -1,0 +1,69 @@
+Aggressive Cows
+
+Given an integer array arr[], which denotes the positions of stalls. All the positions are distinct. There are k aggressive cows.
+
+Assign the cows to the stalls such that the minimum distance between any two cows is maximized.
+
+
+class Solution {
+    bool canweplace(vector<int>& arr,int mid,int k){
+        
+        // we will place one cow at min value.
+        
+        int placed = arr[0];
+        int cnt = 1;// as you already placed one cow there.
+        // now we try to find out that how many cow we can place 
+        //at min distance of mid.
+        
+        for(int i=1;i<arr.size();i++){
+            
+            if(arr[i]-placed >= mid){
+                cnt++;
+                placed = arr[i];
+            }
+            
+        }
+        
+        // now if you can place more than k cow then you have to return true.
+        // otherwise false.
+        
+        if(cnt>=k) return true;
+        return false;
+        
+    }
+  public:
+    int aggressiveCows(vector<int> &arr, int k) {
+        // Pattern binary search on answers.
+        // this question is solved in two steps.
+        // make the range of the possible values of the ans and search it using bs
+        // verify that your answer is correct or not now if it is not correct then you have to look into the lft
+        // if it is correct then look into the right segment.
+        
+        // step 1  is sorting 
+        sort(arr.begin(),arr.end());
+        
+        // now take low and high as i already told you that we have to look into the answers
+        // low - > minimum possible answer 
+        // high - > maximum possible answer
+        
+        int low = 0; // two cows can be placed at the same place.
+        int high = arr.back()-arr.front(); // place one cow at min val and anther at max val
+        
+        // now start searching.
+        
+        while(low<=high){
+            
+            int mid = (high-low)/2 + low ; 
+            
+            if(canweplace(arr,mid,k)){
+                low = mid+1;
+            }
+            else high = mid-1;
+        }
+        // since the not possible values are at the right of the range 
+        //there for after the complete traversal through the values
+        // you can say that high will show you the max value of the answer.
+        return high;
+        
+    }
+};
