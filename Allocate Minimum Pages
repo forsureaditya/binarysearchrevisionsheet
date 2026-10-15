@@ -1,0 +1,67 @@
+Allocate Minimum Pages
+
+Given an array arr[] of integers, where each element arr[i] represents the number 
+of pages in the i-th book. You also have an integer k representing the number of students. 
+The task is to allocate books to each student such that:
+
+Each student receives atleast one book.
+Each student is assigned a contiguous sequence of books.
+No book is assigned to more than one student.
+All books must be allocated.
+The objective is to minimize the maximum number of pages assigned to any student. In other words, out of all possible allocations, 
+find the arrangement where the student who receives the most pages still has the smallest possible maximum.
+If it is not possible to allocate books to all students, return -1;
+
+class Solution {
+    long long maxallocation(vector<int> &arr,long long mid){
+        // lets the the cnt to be 1 that obious reason
+        long long cnt = 1;
+        long long sum = 0;
+        for(int i=0;i<arr.size();i++){
+            // we will sum the pages if any moment it exceeds the mid value 
+            // we will go to the else part where we increase the count
+            // that means from there we have started givig books to new person
+            // ans give him arr[i] number of book 
+            if(sum+arr[i]<=mid){
+                sum+=arr[i];
+            }
+            else{
+                cnt++;
+                sum=arr[i];
+            }
+        }
+        
+        return cnt;
+    }
+  public:
+    int findPages(vector<int> &arr, int k) {
+        // the binary search on answers
+        // first make the range
+        // low => max element why? because if you have to allocate books
+        // among arr.size() element then obiously you can allocate a max 
+        // of max_element page to a person 
+        // and the high => max sum of all the elements in that array.
+        
+        long long low =  *max_element(arr.begin(),arr.end());
+        long long high = accumulate(arr.begin(),arr.end(),0LL);
+        
+        
+        // if you have this k greater than arr.size() thats is the case
+        // to return -1.
+        if(arr.size()<k) return -1;
+        
+        while(low<=high){
+            
+            long long mid = (high-low)/2+low;
+            // now we are getting the books distributed among cnt people that can have max
+            // mid pages in with them how if the number of pages is less and equal to k
+            // that means we are at the right and we should move to the left.
+            if(maxallocation(arr,mid)<=k){
+                high = mid-1;
+            }
+            // that means we have a lot of people and we need to go to the right
+            else low = mid+1;
+        }
+        return low;
+    }
+};
