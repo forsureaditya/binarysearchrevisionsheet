@@ -19,6 +19,7 @@ class Solution {
             
             if(arr[i]-placed >= mid){
                 cnt++;
+                // you always have to look from the perspective of the lastest cow that you have previously placed
                 placed = arr[i];
             }
             
